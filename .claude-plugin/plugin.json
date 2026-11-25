@@ -1,6 +1,6 @@
 {
   "name": "agentic",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Highly opinionated skills for coding agents.",
   "author": {
     "name": "Lennart Möller"
