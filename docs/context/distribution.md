@@ -512,8 +512,10 @@ Validating the marketplace does not validate the plugins it lists, so the qualit
 **Status:** active
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-25
+**Verification:** contradicted — since 2026-11-25 this repository enables the plugins in .claude/settings.json only, since the maintainer deleted .github/copilot/settings.json from every repository, which https://github.com/lennartmoeller/github-setup ca24e67e-a5d2-47ab-b4e1-be1910250b9a records
 **See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 **See:** distribution.md#the-repository-consumes-its-own-plugin-from-skills — 6833aac8-e37a-4ca3-89e5-58992f58e2da — as of 2026-11-25
+**See:** https://github.com/lennartmoeller/github-setup — ca24e67e-a5d2-47ab-b4e1-be1910250b9a — as of 2026-11-25
 
 The plugins sit in `plugins/<name>/`, each with its skills in its own `skills/`, and this repository enables all three in `.claude/settings.json` and `.github/copilot/settings.json` like every other consuming repository.
 A session here therefore runs on the published state of `main`, and `claude --plugin-dir plugins` loads the working tree of all three instead.
