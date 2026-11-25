@@ -1,0 +1,1 @@
+- Use the `agentic:context-authoring` skill before creating or editing anything in `docs/context/`.

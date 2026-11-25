@@ -1,0 +1,12 @@
+[tools]
+actionlint = "1.7.12"
+"aqua:anthropics/claude-code" = "2.1.330"
+shellcheck = "0.11.0"
+
+[tasks.check]
+shell = "bash -euo pipefail -c"
+run = [
+  "claude plugin validate . --strict",
+  "shellcheck --severity=warning install.sh hooks/*.sh skills/*/scripts/*.sh",
+  "actionlint",
+]
