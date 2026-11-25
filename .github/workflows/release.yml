@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ssh-key: ${{ secrets.RELEASE_DEPLOY_KEY }}
+          fetch-depth: 0
+
+      - name: Release next version
+        uses: lennartmoeller/release-from-conventional-commits@7764ed22b8fe067d3583b44121e206bd691a534e # v0.1.2
+        with:
+          write_version: yq -i '.version = strenv(VERSION)' .claude-plugin/plugin.json

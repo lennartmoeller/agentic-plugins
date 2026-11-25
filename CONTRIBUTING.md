@@ -1,0 +1,22 @@
+# Contributing
+
+## Local setup
+
+1. Install [mise](https://mise.jdx.dev/getting-started.html).
+2. Run `mise trust` and `mise install` in the repository root to install every tool in the version [`mise.toml`](./mise.toml) pins.
+
+## Try a change
+
+Start a session that loads the plugin from this checkout instead of the installed one:
+
+```sh
+claude --plugin-dir .
+```
+
+## Check a change
+
+Run `mise run check`, the quality gate that CI runs as the required `Quality` check on every pull request.
+
+## Release
+
+A manual run of the `Release` workflow on `main` runs [`release-from-conventional-commits`](https://github.com/lennartmoeller/release-from-conventional-commits) action to release a new version.

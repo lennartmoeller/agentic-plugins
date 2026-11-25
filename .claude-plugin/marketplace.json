@@ -1,0 +1,6 @@
+{
+  "name": "lennartmoeller",
+  "description": "Coding agent plugins by Lennart Möller.",
+  "owner": { "name": "Lennart Möller" },
+  "plugins": [{ "name": "agentic", "source": "./" }]
+}

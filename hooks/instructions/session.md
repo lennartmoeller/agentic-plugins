@@ -1,0 +1,1 @@
+- Use the `agentic:context-authoring` skill at the start of this session, before doing anything else.

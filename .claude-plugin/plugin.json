@@ -1,0 +1,11 @@
+{
+  "name": "agentic",
+  "version": "0.0.0",
+  "description": "Highly opinionated skills for coding agents.",
+  "author": {
+    "name": "Lennart Möller"
+  },
+  "network": {
+    "hosts": []
+  }
+}
