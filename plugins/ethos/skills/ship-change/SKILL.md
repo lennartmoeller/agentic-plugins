@@ -16,7 +16,7 @@ Always strictly follow them when taking any of these steps.
 ## Rules
 
 - Run a stage only when the user asks for that stage, through `/ship-change` or in their own words; asking to implement a plan that lists the stage does not count.
-- Whenever a stage is the next logical step without the user asking for it, ask first, through the interactive question tool where there is one, offering the runs possible now, and run only what the user says yes to.
+- Never ask for, offer or suggest a stage the user has not asked for, even when it is the next logical step: once a change is done, report what changed and stop.
 - Run each stage through `sh "<this skill's base directory>/scripts/ship-change.sh" <command>`, with the repository as working directory, and anything else on GitHub through `gh`.
 - Write every commit and pull request title as a Conventional Commits title of at most 72 characters that sums up the whole change.
 - Never add a commit description, a trailer such as `Co-Authored-By`, or a "Generated with" line, whatever the tool's default.

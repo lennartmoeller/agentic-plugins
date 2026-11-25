@@ -8,6 +8,8 @@
     }
   },
   "enabledPlugins": {
-    "agentic@lennartmoeller": true
+    "ethos@lennartmoeller": true,
+    "empty-house-refactoring@lennartmoeller": true,
+    "list-github-findings@lennartmoeller": true
   }
 }

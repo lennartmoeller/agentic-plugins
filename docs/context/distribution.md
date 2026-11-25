@@ -6,10 +6,11 @@ how the setup reaches its consumers: the plugin route, enabling it per repositor
 
 **Id:** ce0294c5-2188-42ab-8212-5dc84f02dd31
 **Type:** decision
-**Status:** active
+**Status:** superseded
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-21; plugin documentation of Claude Code and Copilot CLI read that day
 **Revisit when:** cloud or CI agents become a required consumer, or either tool stops reading the Claude Code plugin format
+**Superseded by:** 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368
 
 The skills and the instructions are offered as one plugin, `agentic`, from a marketplace in this repository in Claude Code's plugin format.
 A repository enables it for everyone who works in it through its settings files.
@@ -103,10 +104,11 @@ The plugin validator warns about the missing version on every run.
 
 **Id:** 6833aac8-e37a-4ca3-89e5-58992f58e2da
 **Type:** decision
-**Status:** active
+**Status:** superseded
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-21; probes with the plugin validator that day
 **See:** distribution.md#the-setup-travels-as-a-plugin-from-a-marketplace-in-this-repository — ce0294c5-2188-42ab-8212-5dc84f02dd31 — as of 2026-11-21
+**Superseded by:** c7994d11-e181-41ee-8907-5f85ae5c6ef2
 
 The skills sit in `skills/` at the repository root, and this repository enables its own plugin in `.claude/settings.json` like every other consuming repository.
 A session here therefore runs on the published state of `main`, and `claude --plugin-dir .` loads the working tree instead.
@@ -193,7 +195,7 @@ The agent recommended keeping it; the maintainer chose a clean validator over it
 
 **Id:** 8834f1f7-971a-4579-9d8c-ee2e5ad99c24
 **Type:** decision
-**Status:** active
+**Status:** superseded
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-22; Claude Code 2.1.330 and Copilot CLI 1.0.114 probed that day; Claude Code's plugin loading documentation read that day; the maintainer's test of the published one-liner on another machine that day
 **Verification:** corroborated — install.sh run in throwaway repositories on 2026-11-22 for a first install, a re-run, a fresh clone, an older Claude Code install and a first Copilot CLI install, and the published one-liner run by the maintainer on another machine that day, where Copilot CLI installed the plugin on folder trust, a re-run found the install, and another repository kept the plugin off
@@ -201,6 +203,7 @@ The agent recommended keeping it; the maintainer chose a clean validator over it
 **See:** distribution.md#the-plugin-is-enabled-per-repository-never-at-user-level — ef3b3b17-21ad-4f01-af7b-7f47c3c1e7a9 — as of 2026-11-22
 **See:** distribution.md#each-tool-is-enabled-in-its-own-repository-settings-file — 8df2f586-a07c-4864-a699-e695f04cd886 — as of 2026-11-22
 **See:** distribution.md#each-release-raises-the-plugins-semantic-version — 44830694-f21e-4370-a254-53196daeaadf — as of 2026-11-22
+**Superseded by:** b42b56b4-9067-4678-8275-2a3fe195180a
 
 `install.sh` at the repository root, run as `curl -fsSL https://raw.githubusercontent.com/lennartmoeller/agentic-plugins/main/install.sh | bash` inside a consuming repository, lets the person pick Claude Code or Copilot CLI, shows the skills' combined requirements, and installs what is missing or updates an older install.
 It writes only the chosen tool's repository settings file and runs only that tool's own plugin commands; for Copilot CLI it never runs `copilot plugin install`, which has no scope and would enable the plugin in every project, and leaves the install to Copilot CLI's folder trust.
@@ -221,11 +224,12 @@ A person who will not pipe a script reads `install.sh` to see what to write.
 
 **Id:** 40ac02ff-d60d-445e-b2b6-0d46561bed9c
 **Type:** decision
-**Status:** active
+**Status:** superseded
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-22; Claude Code 2.1.330 and Copilot CLI 1.0.114 probed that day
 **Revisit when:** the list in install.sh is found to differ from the skills' compatibility fields
 **See:** distribution.md#a-one-line-installer-sets-the-plugin-up-in-a-repository — 8834f1f7-971a-4579-9d8c-ee2e5ad99c24 — as of 2026-11-22
+**Superseded by:** b42b56b4-9067-4678-8275-2a3fe195180a
 
 `install.sh` holds the combined requirements of all skills as a list, one requirement per line with its check, and `.claude/skills/skill-authoring/SKILL.md` asks that a change to a skill's `compatibility` field updates that list.
 
@@ -370,8 +374,10 @@ The validator advises a README line that installs the plugin from the marketplac
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation 2026-11-22
+**Verification:** contradicted — since 2026-11-25 the gate validates . and each plugins/* folder in a loop and ShellCheck covers install.sh plugins/*/hooks/*.sh plugins/*/skills/*/scripts/*.sh, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records
 **Revisit when:** a broken change reaches main
 **See:** distribution.md#the-quality-gate-is-the-plugin-validator-and-shellcheck — c1c1889b-f38e-4971-85cb-9b090b76ee30 — as of 2026-11-22
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 `mise run check` runs `claude plugin validate . --strict`, `shellcheck --severity=warning install.sh hooks/*.sh skills/*/scripts/*.sh` and actionlint, locally and as CI's required `Quality` check on every pull request.
 `mise.toml` pins Claude Code as the native binary of `aqua:anthropics/claude-code`, ShellCheck and actionlint, and Renovate keeps those pins, by the Git tags of `anthropics/claude-code`, and the workflows' action pins current.
@@ -391,11 +397,12 @@ The reasons for `--strict`, for ShellCheck and for its `warning` severity are un
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation 2026-11-22
-**Verification:** contradicted — the computing action, which 7a599839 names as release-from-conventional-commits instead of next-version, and the release on every merge, which 9d159a76-584a-4144-8a68-e5ae6114c437 replaces with a manual run
+**Verification:** contradicted — the computing action, which 7a599839 names as release-from-conventional-commits instead of next-version, the release on every merge, which 9d159a76-584a-4144-8a68-e5ae6114c437 replaces with a manual run, and the one manifest, which a1d4071c-aaf4-4e91-a040-0d265fe6c0d4 replaces with every plugin's
 **Revisit when:** a release is found to have reached no consumer, or Copilot CLI is found to update regardless of the version
 **See:** distribution.md#each-release-raises-the-plugins-semantic-version — 44830694-f21e-4370-a254-53196daeaadf — as of 2026-11-22
 **See:** distribution.md#the-release-runs-release-from-conventional-commits-which-also-creates-the-github-release — 7a599839-67d0-4c4f-ad4b-3c6d1f33ddbb — as of 2026-11-25
 **See:** distribution.md#the-release-runs-only-when-the-maintainer-starts-it — 9d159a76-584a-4144-8a68-e5ae6114c437 — as of 2026-11-25
+**See:** distribution.md#the-plugins-share-one-version — a1d4071c-aaf4-4e91-a040-0d265fe6c0d4 — as of 2026-11-25
 
 Every merge to `main` releases: `lennartmoeller/next-version` computes the version from the pull request title, and the release writes it into `.claude-plugin/plugin.json`, commits `chore(release): <version> [skip ci]` and tags `v<version>`.
 `CONTRIBUTING.md` no longer asks a change to raise the version by hand.
@@ -413,9 +420,11 @@ Every merge to `main` releases: `lennartmoeller/next-version` computes the versi
 **Status:** active
 **Evidence:** inferred
 **Source:** conversation 2026-11-25
+**Verification:** contradicted — since 2026-11-25 write_version sets the version in every plugins/*/.claude-plugin/plugin.json, which a1d4071c-aaf4-4e91-a040-0d265fe6c0d4 records
 **Revisit when:** a release attaches files, or a change to a skill is merged under a type that releases nothing
 **See:** distribution.md#the-release-raises-the-plugins-version — 37d44193-9ce0-4022-a27f-cd313c3c06d0 — as of 2026-11-25
 **See:** https://github.com/lennartmoeller/release-from-conventional-commits — 46669e3b-4e28-444e-a992-4a5a52811336 — as of 2026-11-25
+**See:** distribution.md#the-plugins-share-one-version — a1d4071c-aaf4-4e91-a040-0d265fe6c0d4 — as of 2026-11-25
 
 The release workflow has one job, which runs `lennartmoeller/release-from-conventional-commits` pinned by commit with a `write_version` script that sets the version in `.claude-plugin/plugin.json` through `yq`; the action calculates the version from the pull request titles since the last version, commits, tags, pushes over the release deploy key and creates the GitHub release.
 
@@ -459,3 +468,133 @@ The release workflow has only a `workflow_dispatch` trigger, so a merge to `main
 **Rejected alternative:** Continuing at `agentic`'s `1.0.0`.
 
 **Consequence:** A consumer who moves from `agentic` sees the version go from `1.0.0` to `0.x`, which Claude Code treats as a change like any other, since it updates whenever the version differs.
+
+## The setup travels as three plugins from a marketplace in this repository
+
+**Id:** 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368
+**Type:** decision
+**Status:** active
+**Evidence:** confirmed
+**Source:** planning conversation with the maintainer, 2026-11-25; probes with Claude Code 2.1.330 and Copilot CLI 1.0.114 that day
+**Verification:** corroborated — on 2026-11-25 Claude Code and Copilot CLI each installed list-github-findings alone from a local copy of the three-plugin marketplace, Claude Code's cache held only that plugin's folder, and an installed agentic whose marketplace entry was renamed to ethos failed to load with 'Plugin agentic not found in marketplace lennartmoeller' while ethos loaded
+**Revisit when:** a skill is needed by more than one plugin, or either tool stops installing a plugin from a sub-folder of a marketplace
+**See:** distribution.md#the-setup-travels-as-a-plugin-from-a-marketplace-in-this-repository — ce0294c5-2188-42ab-8212-5dc84f02dd31 — as of 2026-11-25
+
+The marketplace `lennartmoeller` offers three plugins, each in its own folder under `plugins/`: `ethos` with the hooks and every skill but two, and `empty-house-refactoring` and `list-github-findings` with that one skill each.
+`ethos` is the former `agentic`, renamed with the split, and its skills are announced as `ethos:<skill>`.
+A repository enables any combination, and each plugin works without the others.
+
+**Reason:** the maintainer split off the two user-invoked special cases, which nothing else references, so that a repository takes them without the core, or the core without them, which is confirmed.
+The maintainer chose `ethos` for the core, the guiding beliefs and practices of a craft, so that the name says the plugin carries a way of working; the rename rides on the split's release, which already asks every consumer to run the installer again.
+The reasons for the marketplace route itself are those of the entry this one replaces, and they are unchanged.
+
+**Rejected alternative:** keeping the name `agentic`, which leaves every consumer's `agentic@lennartmoeller` and every `agentic:<skill>` announcement valid.
+
+**Rejected alternative:** `base`, which is short but generic enough to clash with another marketplace's plugin and suggests that the other two plugins depend on it.
+
+**Rejected alternative:** `house-rules`, the agent's first proposal, which the maintainer asked to improve on.
+
+**Rejected alternative:** keeping the core at the repository root with the two new plugins in sub-folders, which copies the other plugins, the docs and the installer into every cache of the core.
+
+**Rejected alternative:** shorter plugin names with renamed skills, such as `github-findings:list`; each single-skill plugin carries its skill's name instead, and Claude Code 2.1.330 runs `/list-github-findings` without the plugin prefix.
+
+**Consequence:** a plugin's cache holds only its own folder, so the installer and the docs no longer reach consumers.
+A repository set up before the split keeps `agentic@lennartmoeller` in its settings, since the installer only adds keys; Claude Code then lists `agentic` as failed to load, not found in the marketplace, and loads none of its hooks, until the line is deleted and the plugin uninstalled by hand.
+Such a repository gets `ethos` and the two single-skill plugins only by running the installer again and saying yes to them.
+The maintainer released the split as a feature, `0.2.0`, rather than as a breaking `1.0.0`, because the repository started over at `0.1.0` on purpose.
+Every plugin carries the same portrait as `.claude-plugin/icon.png` and a description, a single-skill plugin its skill's description word for word, because the validator looks only inside the plugin folder, `--strict` fails without a description, and the maintainer wants the validator to report nothing.
+Validating the marketplace does not validate the plugins it lists, so the quality gate validates each plugin folder as well.
+
+## The repository consumes its own three plugins from plugins/
+
+**Id:** c7994d11-e181-41ee-8907-5f85ae5c6ef2
+**Type:** decision
+**Status:** active
+**Evidence:** confirmed
+**Source:** planning conversation with the maintainer, 2026-11-25
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
+**See:** distribution.md#the-repository-consumes-its-own-plugin-from-skills — 6833aac8-e37a-4ca3-89e5-58992f58e2da — as of 2026-11-25
+
+The plugins sit in `plugins/<name>/`, each with its skills in its own `skills/`, and this repository enables all three in `.claude/settings.json` and `.github/copilot/settings.json` like every other consuming repository.
+A session here therefore runs on the published state of `main`, and `claude --plugin-dir plugins` loads the working tree of all three instead.
+
+**Reason:** every skill stays available here as before, and the repository uses each plugin as a consumer does, so a broken split shows here first; the maintainer chose all three, which is confirmed.
+The reasons of the entry this one replaces for `skills/` inside the plugin and against `.claude/skills/` are unchanged.
+
+**Rejected alternative:** enabling only `ethos`, which leaves the two single-skill plugins tried only through `--plugin-dir`.
+
+**Consequence:** a session in this repository does not see an unpublished change unless it is started with `--plugin-dir plugins`.
+
+## The installer asks about each plugin and updates the ones already set up
+
+**Id:** b42b56b4-9067-4678-8275-2a3fe195180a
+**Type:** decision
+**Status:** active
+**Evidence:** inferred
+**Source:** planning conversation with the maintainer, 2026-11-25; Claude Code 2.1.330 and 2.1.332 and Copilot CLI 1.0.114 probed that day
+**Verification:** corroborated — on 2026-11-25 install.sh, pointed at a local copy of the marketplace, set up single plugins, updated them on a re-run and wrote nothing when every plugin was declined, in throwaway repositories under Bash 3.2; the published one-liner and a Copilot CLI re-run against GitHub are not observed yet
+**Revisit when:** either tool gains a command that writes a repository's plugin settings completely, a consumer cannot pipe a script into bash, or the requirement table is found to differ from the skills' compatibility fields
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
+**See:** distribution.md#a-one-line-installer-sets-the-plugin-up-in-a-repository — 8834f1f7-971a-4579-9d8c-ee2e5ad99c24 — as of 2026-11-25
+**See:** distribution.md#the-installer-carries-its-own-copy-of-the-skills-combined-requirements — 40ac02ff-d60d-445e-b2b6-0d46561bed9c — as of 2026-11-25
+
+`install.sh` at the repository root, run as `curl -fsSL https://raw.githubusercontent.com/lennartmoeller/agentic-plugins/main/install.sh | bash` inside a consuming repository, lets the person pick Claude Code or Copilot CLI, updates every plugin already set up for that tool without a question, and asks yes or no for each other plugin, naming it only.
+It shows one ✓/✗ row per requirement that a plugin set up or chosen needs, each row naming the plugins that need it, and leaves the list out when none does; `empty-house-refactoring`'s Git has no row, because the installer refuses to run outside a Git repository.
+Before it installs or updates for Claude Code, it refreshes its copy of the marketplace.
+
+**Reason:** the maintainer chose one run that sets up any combination, with a re-run staying the way to update everything already there, which is confirmed.
+Naming the plugins without a description, leaving out the Git row and refreshing the marketplace were the agent's proposals, which the maintainer approved with the plan.
+The refresh is there because a repository set up before the split holds a copy of the marketplace that lists `agentic` alone, and Claude Code, when it cannot find a plugin, says the local copy may be out of date; that it would fail without the refresh is inferred from that message.
+The reasons of the entries this one replaces for a one-line installer and for a hand-kept requirement table are unchanged.
+
+**Rejected alternative:** plugin names as arguments to the one-liner, which add arguments and one README line per plugin.
+
+**Rejected alternative:** one plugin per run from a menu, which repeats the question about the tool for every plugin.
+
+**Rejected alternative:** a description of each plugin in the question, a third copy of each description beside `plugin.json` and the README.
+
+**Consequence:** the installer no longer lands in any plugin cache.
+A collaborator's fresh clone with committed settings is asked about each plugin, since none is installed for that clone yet.
+`skill-authoring` asks that a changed `compatibility` field updates the rows of the table.
+
+## The plugins share one version
+
+**Id:** a1d4071c-aaf4-4e91-a040-0d265fe6c0d4
+**Type:** decision
+**Type:** workaround
+**Status:** active
+**Evidence:** inferred
+**Source:** planning conversation with the maintainer, 2026-11-25; yq 4.54.3 probed that day
+**Verification:** corroborated — on 2026-11-25 the release's write_version script set 0.2.0 in all three manifests of a scratch copy
+**Revisit when:** a plugin needs a release of its own, or the release action gains a path or tag-prefix input
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
+**See:** distribution.md#the-release-runs-release-from-conventional-commits-which-also-creates-the-github-release — 7a599839-67d0-4c4f-ad4b-3c6d1f33ddbb — as of 2026-11-25
+**See:** distribution.md#the-release-raises-the-plugins-version — 37d44193-9ce0-4022-a27f-cd313c3c06d0 — as of 2026-11-25
+
+Each release writes the same version into every `plugins/*/.claude-plugin/plugin.json`, through a `write_version` that runs `yq -i` on one manifest at a time.
+
+**Reason:** `release-from-conventional-commits` computes one version for the repository from `vX.Y.Z` tags and has no input for a path or a tag prefix; the maintainer chose the shared version, which is confirmed.
+`yq -i` given several files writes every document into the first file and leaves the others unchanged, which a probe showed, so the loop gives each manifest a run of its own.
+
+**Rejected alternative:** one version per plugin, which needs per-plugin tags and paths in the release action or another release tool, and a way to tell which plugin a pull request changed.
+
+**Consequence:** a release raises every plugin's version even when only one changed, so Claude Code downloads unchanged plugins again and their versions skip ahead.
+
+## APM does not replace the installer for now
+
+**Id:** bf761ed8-c128-407e-bbbf-ef470598a784
+**Type:** decision
+**Status:** active
+**Evidence:** confirmed
+**Source:** planning conversation with the maintainer, 2026-11-25; documentation, changelog and source of APM v0.39.0 read that day
+**Revisit when:** APM reaches 1.0, or its native plugin route loads in git worktrees and keeps the harness's own updates
+**See:** distribution.md#the-installer-asks-about-each-plugin-and-updates-the-ones-already-set-up — b42b56b4-9067-4678-8275-2a3fe195180a — as of 2026-11-25
+
+The maintainer considered replacing `install.sh` with Microsoft's Agent Package Manager, APM, and kept the installer.
+
+**Considered:** each consumer declares the plugins it wants in an `apm.yml` and runs `apm install`, which since APM 0.38 copies each Claude Code plugin whole into the repository's `.agents/plugins/<plugin>/` and writes `extraKnownMarketplaces` and `enabledPlugins` into `.claude/settings.json` and `.github/copilot/settings.json`; the consumer commits `apm.yml`, `apm.lock.yaml` and the copies.
+
+**Reason:** updates would come only from `apm update` or bot pull requests instead of Claude Code's own `autoUpdate`; every collaborator would install the `apm` CLI and run `apm install` once; APM documents that such plugins do not load in git worktrees, where `empty-house-refactoring` runs, nor in `claude -p`; it cannot check the tools the skills need; and at 0.39 it ships breaking changes about weekly, its plugin route a few days old.
+The maintainer chose to keep the installer, which is confirmed, and the facts about APM come from its own documentation, changelog and source.
+
+**Consequence:** APM can already install these plugins from the marketplace as they are, except that it parks a plugin whose `plugin.json` has a field it does not admit, such as the `network` of `ethos`'s manifest.

@@ -25,4 +25,7 @@ jobs:
       - name: Release next version
         uses: lennartmoeller/release-from-conventional-commits@7764ed22b8fe067d3583b44121e206bd691a534e # v0.1.2
         with:
-          write_version: yq -i '.version = strenv(VERSION)' .claude-plugin/plugin.json
+          write_version: |
+            for manifest in plugins/*/.claude-plugin/plugin.json; do
+              yq -i '.version = strenv(VERSION)' "$manifest"
+            done

@@ -13,7 +13,7 @@ Always strictly follow them when creating or editing any of these.
 
 ## General rules
 
-- When editing any of these files, use the `agentic:markdown-authoring` skill.
+- When editing any of these files, use the `ethos:markdown-authoring` skill.
 - Keep each file current, concise and focused on its reader's task.
 - Give each fact or rule one canonical home and link to it instead of maintaining duplicate explanations.
 - Keep implemented contracts in code, schemas, workflows and tests.

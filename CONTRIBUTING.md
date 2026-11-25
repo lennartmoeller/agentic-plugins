@@ -6,7 +6,7 @@ Install [mise](https://mise.jdx.dev/getting-started.html), then run `mise trust`
 
 ## Run locally
 
-Run `claude --plugin-dir .` to load the plugin from this checkout instead of the installed one.
+Run `claude --plugin-dir plugins` to load the plugins from this checkout instead of the installed ones.
 
 ## Check
 

@@ -134,8 +134,10 @@ A request for one of the four situations gets the agent's general judgment, with
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation with the maintainer, 2026-11-21
+**Verification:** contradicted — since 2026-11-25 the plugin is named ethos, so the skill is ethos:context-authoring, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records
 **Revisit when:** the skill takes over larger parts of Keep the Why again
 **See:** context-authoring.md#context-authoring-holds-only-what-changes-what-the-agent-does — 001290d3-b7d2-449f-877c-e8a4d9accfe9 — as of 2026-11-21
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 `skills/context-authoring/` replaces `skills/keep-the-why/`, renamed and without upstream's licence file, and the README states that it is inspired by Keep the Why and names its author.
 Its format, before a reference file read when writing an entry, is part of `SKILL.md`, and the example entry and phrases copied word for word from upstream were replaced.

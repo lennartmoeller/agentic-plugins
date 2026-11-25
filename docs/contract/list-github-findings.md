@@ -4,10 +4,10 @@
 sequenceDiagram
     participant user as User
     participant agent as Agent
-    participant script as skills/list-github-findings/scripts/list-github-findings.sh
+    participant script as plugins/list-github-findings/skills/list-github-findings/scripts/list-github-findings.sh
     participant github as GitHub REST API through gh
 
-    user->>agent: /agentic:list-github-findings
+    user->>agent: /list-github-findings
     agent->>script: run, with the repository as working directory
     loop each group: code-scanning/alerts, secret-scanning/alerts, dependabot/alerts, code-quality/findings
         script->>github: GET the group's path under repos/{owner}/{repo}, open findings only, every page, secret scanning a second time for the generic secret types
@@ -21,4 +21,4 @@ sequenceDiagram
     end
 ```
 
-[`SKILL.md`](../../skills/list-github-findings/SKILL.md) holds the rules, and [`docs/context/list-github-findings.md`](../context/list-github-findings.md) the reasons.
+[`SKILL.md`](../../plugins/list-github-findings/skills/list-github-findings/SKILL.md) holds the rules, and [`docs/context/list-github-findings.md`](../context/list-github-findings.md) the reasons.

@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 # Empty-house refactoring
 
-These instructions govern every empty-house refactoring of a repository.
+These instructions govern the empty-house refactoring of a repository.
 Always strictly follow them when running one.
 
 A repository gets messy over time, and bad practices creep in unnoticed.

@@ -1,6 +1,6 @@
 ---
 name: skill-authoring
-description: Creates and edits the plugin's skills in `skills/` for Claude Code and Copilot CLI.
+description: Creates and edits the plugins' skills in `plugins/*/skills/` for Claude Code and Copilot CLI.
 license: MIT
 metadata:
   author: Lennart Möller
@@ -8,7 +8,7 @@ metadata:
 
 # Skill authoring
 
-These instructions govern every skill in `skills/`.
+These instructions govern every skill in `plugins/*/skills/`.
 Always strictly follow them when creating or editing one.
 
 ## Frontmatter
@@ -25,12 +25,13 @@ Always strictly follow them when creating or editing one.
   | `argument-hint` | Only when the user passes the skill an argument: the argument in square brackets, quoted, such as `"[idea]"`. |
   | `disable-model-invocation` | Only `true`, where [Announcement](#announcement) asks for it. |
 
-- Whenever a `compatibility` field changes, update the requirement list in [`install.sh`](../../../install.sh) to the combined requirements of all skills.
+- Whenever a `compatibility` field changes, update the requirement table in [`install.sh`](../../../install.sh) so that each row names exactly the plugins whose skills need it.
 
 ## Description
 
 - Write the frontmatter `description` as exactly one sentence in the third person present that says what the skill does and to what, such as "Creates and edits GitHub Actions workflows, reusable actions, and reusable workflows."
 - Never say in the description when to use or load the skill.
+- Give a plugin that holds a single skill that skill's description, word for word, as the `description` in its `.claude-plugin/plugin.json`.
 
 ## Opening
 
@@ -49,13 +50,13 @@ Always strictly follow them when creating or editing one.
 
 - Announce every skill the agent may use on its own, and set `disable-model-invocation: true` in the frontmatter of every other skill.
 - Say when to use a skill in its announcement, a list item "Use the `<skill>` skill <occasion>." without a purpose clause.
-- Announce a skill as `agentic:<name>` in `hooks/instructions/`: in `session.md` for a session only, in `subagent.md` for a subagent only, and in `shared.md` for both.
+- Announce a skill as `ethos:<name>` in `plugins/ethos/hooks/instructions/`: in `session.md` for a session only, in `subagent.md` for a subagent only, and in `shared.md` for both.
 - Give each skill at most one announcement per audience.
 - Name another skill of the plugin wherever it matters that the skills are used together.
 
 ## README entry
 
-- List every skill in the README, a link to its `SKILL.md` followed by `<br/>` and exactly its frontmatter description.
+- List every skill in the README under its plugin, a link to its `SKILL.md` followed by `<br/>` and exactly its frontmatter description.
 
 ## What instructions include
 
@@ -65,7 +66,7 @@ Always strictly follow them when creating or editing one.
 ## Writing style
 
 - Keep instructions short and to the point.
-- Use the `agentic:markdown-authoring` skill to write instructions.
+- Use the `ethos:markdown-authoring` skill to write instructions.
 
 ## Deterministic first
 

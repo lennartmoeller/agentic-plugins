@@ -6,7 +6,7 @@ shellcheck = "0.11.0"
 [tasks.check]
 shell = "bash -euo pipefail -c"
 run = [
-  "claude plugin validate . --strict",
-  "shellcheck --severity=warning install.sh hooks/*.sh skills/*/scripts/*.sh",
+  "for folder in . plugins/*; do claude plugin validate \"$folder\" --strict; done",
+  "shellcheck --severity=warning install.sh plugins/*/hooks/*.sh plugins/*/skills/*/scripts/*.sh",
   "actionlint",
 ]
