@@ -6,7 +6,7 @@ Highly opinionated skills for coding agents packaged as plugins for Claude Code 
 
 ### `ethos`
 
-The core skills, with session rules that tell the agent when to use each.
+The core skills, optimized for everyday work.
 
 #### General working
 
