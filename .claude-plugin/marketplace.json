@@ -2,5 +2,9 @@
   "name": "lennartmoeller",
   "description": "Coding agent plugins by Lennart Möller.",
   "owner": { "name": "Lennart Möller" },
-  "plugins": [{ "name": "agentic", "source": "./" }]
+  "plugins": [
+    { "name": "ethos", "source": "./plugins/ethos" },
+    { "name": "empty-house-refactoring", "source": "./plugins/empty-house-refactoring" },
+    { "name": "list-github-findings", "source": "./plugins/list-github-findings" }
+  ]
 }

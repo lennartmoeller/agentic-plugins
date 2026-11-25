@@ -1,7 +1,0 @@
-- Use the `agentic:foundational-coding-principles` skill first whenever a request involves code or architecture or asks you to plan, design, recommend, review or make any change, and before creating or changing any file.
-- Use the `agentic:contract-authoring` skill after implementing a change.
-- Use the `agentic:guidance-authoring` skill whenever creating or editing one of `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `CLAUDE.md`.
-- Use the `agentic:markdown-authoring` skill whenever creating or editing a Markdown file.
-- Use the `agentic:ship-change` skill whenever creating a branch, committing, pushing, or opening, reviewing or merging a pull request.
-- Use the `agentic:workflow-authoring` skill whenever creating or editing a GitHub Actions workflow or reusable action/workflow.
-- Only for implementation changes and only at the complete end after fully implementing a change, run the repository's canonical quality gate, if one exists.

@@ -1,0 +1,8 @@
+{
+  "name": "list-github-findings",
+  "version": "0.1.0",
+  "description": "Lists every open code scanning, secret scanning, Dependabot and code quality finding of the current GitHub repository.",
+  "author": {
+    "name": "Lennart Möller"
+  }
+}

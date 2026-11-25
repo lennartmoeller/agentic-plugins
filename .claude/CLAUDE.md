@@ -1,1 +1,1 @@
-- Use the `skill-authoring` skill whenever creating or editing a skill in `skills/`.
+- Use the `skill-authoring` skill whenever creating or editing a skill in `plugins/*/skills/`.

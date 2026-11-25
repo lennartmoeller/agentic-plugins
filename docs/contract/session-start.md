@@ -3,14 +3,14 @@
 ```mermaid
 sequenceDiagram
     participant tool as Claude Code or Copilot CLI
-    participant hook as hooks/hooks.json
-    participant script as hooks/rules.sh
-    participant session as hooks/instructions/session.md
-    participant subagent as hooks/instructions/subagent.md
-    participant list as hooks/instructions/shared.md
+    participant hook as plugins/ethos/hooks/hooks.json
+    participant script as plugins/ethos/hooks/rules.sh
+    participant session as plugins/ethos/hooks/instructions/session.md
+    participant subagent as plugins/ethos/hooks/instructions/subagent.md
+    participant list as plugins/ethos/hooks/instructions/shared.md
     participant agent as Agent or subagent
-    participant why as skills/context-authoring
-    participant skill as skills/foundational-coding-principles
+    participant why as plugins/ethos/skills/context-authoring
+    participant skill as plugins/ethos/skills/foundational-coding-principles
 
     tool->>hook: a session or a subagent starts
     hook->>script: the event name, SessionStart or SubagentStart
@@ -50,4 +50,4 @@ Copilot CLI starts its `general-purpose` subagent without a hook, so that subage
 
 ## Instruction files of a repository
 
-A repository's own `AGENTS.md` or `CLAUDE.md` files reach the agent through the tool itself, beside the plugin.
+A repository's own `AGENTS.md` or `CLAUDE.md` files reach the agent through the tool itself, beside the plugins.

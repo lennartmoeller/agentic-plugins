@@ -6,11 +6,12 @@ how the ship-change skill takes a change from the worktree to main: who may star
 
 **Id:** 51e06a91-1906-43a8-b3be-5a14cb6f3810
 **Type:** decision
-**Status:** active
+**Status:** superseded
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-22
 **Verification:** corroborated — Claude Code probes with its smallest model on 2026-11-22: with the plan's git steps in the prompt or in a plan file, it did the plan's other work and asked before the first git step; an earlier wording without 'even when the user asks to implement the plan' let it commit, open and merge a pull request from a plan in the prompt
 **Revisit when:** an agent is found committing, pushing, opening, reviewing or merging a pull request because a plan listed the step, or asking although the user asked for the stage
+**Superseded by:** ff8ef58a-33eb-48da-aadd-81d978ba0855
 
 `ship-change` runs a stage only when the user asks for that stage, through `/ship-change` or in their own words.
 Whenever a stage is the next logical step without the user asking for it, such as once a change is done or as the next step of a plan, even of one the user approved and asked to implement, the agent asks first, through the interactive question tool where there is one, and runs only what the user says yes to.
@@ -222,3 +223,23 @@ A name wins over initials, so `pr` stays the pr stage alone while `p r` is `pr r
 **Rejected alternative:** reading `pr` as initials, which names `pr review` and changes what `/ship-change pr` did.
 
 **Consequence:** every stage needs an initial of its own, so a new stage sharing one would make initials ambiguous.
+
+## A git stage runs only when the user asks for it, and the agent never offers one
+
+**Id:** ff8ef58a-33eb-48da-aadd-81d978ba0855
+**Type:** decision
+**Status:** active
+**Evidence:** confirmed
+**Source:** conversation with the maintainer, 2026-11-25
+**Revisit when:** an agent is found committing, pushing, opening, reviewing or merging a pull request that the user did not ask for, or offering a stage after a change
+**See:** ship-change.md#a-git-stage-runs-only-on-the-users-own-yes — 51e06a91-1906-43a8-b3be-5a14cb6f3810 — as of 2026-11-25
+
+`ship-change` runs a stage only when the user asks for that stage, through `/ship-change` or in their own words, and a plan that lists the stage does not count as asking.
+Once a change is done, the agent reports what changed and stops, without asking for, offering or suggesting a stage, even when one is the next logical step.
+
+**Reason:** the maintainer does not want to be asked to commit after a change, only told what changed, and wants no suggestion of any step of `ship-change`, which is confirmed.
+
+**Rejected alternative:** asking first, through the interactive question tool, whenever a stage is the next logical step, the rule of the entry this one replaces; the maintainer turned it down on 2026-11-25 when it asked how far to ship a finished change.
+
+**Consequence:** a finished change stays uncommitted in the worktree until the user asks for a stage.
+The wording is not probed yet; the entry this one replaces records how an earlier wording let a plan's git steps run unasked.

@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 # List GitHub findings
 
-These instructions govern every listing of a repository's open GitHub findings.
+These instructions govern the listing of a repository's open GitHub findings.
 Always strictly follow them when listing these findings or working on one.
 
 - Run `sh "<this skill's base directory>/scripts/list-github-findings.sh"` with the repository as working directory.

@@ -3,9 +3,9 @@
 ```mermaid
 flowchart LR
     agent["Agent or subagent"]
-    script["skills/context-authoring/scripts/context.sh<br/>themes, entries, show, theme, add, set, move"]
-    awk["skills/context-authoring/scripts/context.awk<br/>parses, checks and renders the topic files"]
-    guard["hooks/guard.sh<br/>PreToolUse for Edit, Write, MultiEdit, NotebookEdit"]
+    script["plugins/ethos/skills/context-authoring/scripts/context.sh<br/>themes, entries, show, theme, add, set, move"]
+    awk["plugins/ethos/skills/context-authoring/scripts/context.awk<br/>parses, checks and renders the topic files"]
+    guard["plugins/ethos/hooks/guard.sh<br/>PreToolUse for Edit, Write, MultiEdit, NotebookEdit"]
     context["docs/context/*.md of the project<br/>one topic file per theme"]
     people["People"]
 

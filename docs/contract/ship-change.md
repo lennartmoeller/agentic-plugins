@@ -3,7 +3,7 @@
 ```mermaid
 sequenceDiagram
     participant agent as Agent
-    participant script as skills/ship-change/scripts/ship-change.sh
+    participant script as plugins/ethos/skills/ship-change/scripts/ship-change.sh
     participant git as Git and origin
     participant github as GitHub through gh
 
@@ -29,4 +29,4 @@ sequenceDiagram
     script->>git: switch to the default branch, pull --ff-only
 ```
 
-The agent reads the stages from `/ship-change` or the user's words, and `state` gives it the facts behind its judgements, such as whether a branch is meant for the changes; [`SKILL.md`](../../skills/ship-change/SKILL.md) holds the rules, and [`docs/context/ship-change.md`](../context/ship-change.md) the reasons.
+The agent reads the stages from `/ship-change` or the user's words, and `state` gives it the facts behind its judgements, such as whether a branch is meant for the changes; [`SKILL.md`](../../plugins/ethos/skills/ship-change/SKILL.md) holds the rules, and [`docs/context/ship-change.md`](../context/ship-change.md) the reasons.

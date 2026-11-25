@@ -74,8 +74,10 @@ The exception for every group failing was the agent's proposal, approved with th
 **Status:** active
 **Evidence:** inferred
 **Source:** planning conversation with the maintainer, 2026-11-22
+**Verification:** contradicted — since 2026-11-25 the skill is a plugin of its own, so the user starts it as /list-github-findings, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records
 **Revisit when:** the maintainer wants the agent to list findings without being asked, or Copilot CLI is found invoking the skill on its own
 **See:** skills.md#each-part-of-a-skill-has-one-job — 240ad9b3-f152-4d51-add8-78cbefc798cb — as of 2026-11-22
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 The skill sets `disable-model-invocation: true` and has no announcement in `hooks/instructions/`, so the user starts it as `/agentic:list-github-findings`.
 

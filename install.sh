@@ -3,9 +3,7 @@ set -euo pipefail
 
 repository=lennartmoeller/agentic-plugins
 marketplace=lennartmoeller
-plugin_name=agentic
-plugin=$plugin_name@$marketplace
-plugin_title="$plugin_name plugin by Lennart Möller"
+plugins="ethos empty-house-refactoring list-github-findings"
 
 fail() {
   echo "$*" >&2
@@ -22,6 +20,8 @@ name() {
     copilot) echo "Copilot CLI" ;;
     stop) echo "Stop" ;;
     proceed) echo "Proceed anyway" ;;
+    yes) echo "Yes" ;;
+    no) echo "No" ;;
   esac
 }
 
@@ -44,18 +44,18 @@ choose() {
 
 check_own_needs() {
   { true </dev/tty; } 2>/dev/null || fail "install.sh asks questions, so run it in a terminal."
-  root=$(git rev-parse --show-toplevel 2>/dev/null) || fail "install.sh needs Git and must run inside the Git repository that should use the plugin."
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || fail "install.sh needs Git and must run inside the Git repository that should use the plugins."
   has jq || fail "install.sh needs jq: install it (brew install jq, apt install jq, …) and run it again."
   cd "$root"
 }
 
 pick_agent() {
   if has claude && has copilot; then
-    choose "Claude Code and Copilot CLI are installed. Install the plugin for:" claude copilot
+    choose "Claude Code and Copilot CLI are installed. Set up the plugins for:" claude copilot
   elif has claude; then
-    choose "Claude Code is installed, Copilot CLI is not. Install the plugin for:" claude copilot
+    choose "Claude Code is installed, Copilot CLI is not. Set up the plugins for:" claude copilot
   elif has copilot; then
-    choose "Copilot CLI is installed, Claude Code is not. Install the plugin for:" copilot claude
+    choose "Copilot CLI is installed, Claude Code is not. Set up the plugins for:" copilot claude
   else
     choose "Neither Claude Code nor Copilot CLI is installed. Proceed anyway with:" stop claude copilot
   fi
@@ -65,6 +65,44 @@ pick_agent() {
     claude) settings=.claude/settings.json ;;
     copilot) settings=.github/copilot/settings.json ;;
   esac
+}
+
+settings_patch() {
+  jq -n --arg agent "$agent" --arg repository "$repository" --arg marketplace "$marketplace" --arg plugins "$1" '{
+    extraKnownMarketplaces: {
+      ($marketplace): ({source: {source: "github", repo: $repository}} + if $agent == "claude" then {autoUpdate: true} else {} end)
+    },
+    enabledPlugins: ($plugins | split(" ") | map(select(. != "") | {key: "\(.)@\($marketplace)", value: true}) | from_entries)
+  }'
+}
+
+settings_complete() {
+  [[ -f $settings ]] && jq -e --argjson patch "$(settings_patch "$1")" '. * $patch == .' "$settings" >/dev/null
+}
+
+plugin_installed() {
+  case $agent in
+    claude) has claude && claude plugin list --json | jq -e --arg plugin "$1@$marketplace" --arg root "$root" 'any(.[]; .id == $plugin and .projectPath == $root)' >/dev/null ;;
+    copilot) has copilot && copilot plugin list --json | jq -e --arg name "$1" --arg marketplace "$marketplace" 'any(.[]; .name == $name and .marketplace == $marketplace)' >/dev/null ;;
+  esac
+}
+
+pick_plugins() {
+  local plugin
+  installed="" chosen=""
+  for plugin in $plugins; do
+    if settings_complete "$plugin" && plugin_installed "$plugin"; then
+      installed+=" $plugin"
+    else
+      choose "Set up the $plugin plugin?" yes no
+      [[ $choice == no ]] || chosen+=" $plugin"
+    fi
+  done
+  if [[ -z $installed$chosen ]]; then
+    echo
+    echo "Nothing to set up."
+    exit 0
+  fi
 }
 
 version_at_least() {
@@ -79,88 +117,75 @@ uuid_source() {
 }
 
 requirement() {
-  local text=$1 found
-  shift
-  if found=$("$@"); then
-    echo "  ✓ $text${found:+ ($found)}"
-  else
-    echo "  ✗ $text${found:+ ($found)}"
-    return 1
-  fi
+  local text=$1 needed_by=$2 plugin found
+  shift 2
+  for plugin in $needed_by; do
+    [[ " $installed $chosen " == *" $plugin "* ]] || continue
+    if found=$("$@"); then
+      rows+=("  ✓ $text${found:+ ($found)}")
+    else
+      rows+=("  ✗ $text${found:+ ($found)}")
+      met=false
+    fi
+    return
+  done
 }
 
 check_requirements() {
-  local met=true
+  local met=true rows=()
+  requirement "a POSIX shell" "ethos list-github-findings" has sh
+  requirement "Git 2.31 or later" ethos version_at_least git 2.31
+  requirement "GitHub CLI 2.50 or later" "ethos list-github-findings" version_at_least gh 2.50
+  requirement "uuidgen or /proc/sys/kernel/random/uuid" ethos uuid_source
+  ((${#rows[@]})) || return 0
   echo
-  echo "Requirements of the $plugin_name skills:"
-  requirement "a POSIX shell" has sh || met=false
-  requirement "Git 2.31 or later" version_at_least git 2.31 || met=false
-  requirement "GitHub CLI 2.50 or later" version_at_least gh 2.50 || met=false
-  requirement "uuidgen or /proc/sys/kernel/random/uuid" uuid_source || met=false
+  echo "Requirements of the plugins:"
+  printf '%s\n' "${rows[@]}"
   if ! $met; then
     choose "Some skills will not work until every requirement is met." stop proceed
     [[ $choice != stop ]] || exit 0
   fi
 }
 
-settings_patch() {
-  jq -n --arg agent "$agent" --arg repository "$repository" --arg marketplace "$marketplace" --arg plugin "$plugin" '{
-    extraKnownMarketplaces: {
-      ($marketplace): ({source: {source: "github", repo: $repository}} + if $agent == "claude" then {autoUpdate: true} else {} end)
-    },
-    enabledPlugins: {($plugin): true}
-  }'
-}
-
-settings_complete() {
-  [[ -f $settings ]] && jq -e --argjson patch "$(settings_patch)" '. * $patch == .' "$settings" >/dev/null
-}
-
 merge_settings() {
   local merged
-  settings_complete && return
+  settings_complete "$installed $chosen" && return
   mkdir -p "$(dirname "$settings")"
-  merged=$({ cat "$settings" 2>/dev/null || echo '{}'; } | jq --argjson patch "$(settings_patch)" '. * $patch')
+  merged=$({ cat "$settings" 2>/dev/null || echo '{}'; } | jq --argjson patch "$(settings_patch "$installed $chosen")" '. * $patch')
   echo "$merged" >"$settings"
 }
 
-plugin_installed() {
-  case $agent in
-    claude) has claude && claude plugin list --json | jq -e --arg plugin "$plugin" --arg root "$root" 'any(.[]; .id == $plugin and .projectPath == $root)' >/dev/null ;;
-    copilot) has copilot && copilot plugin list --json | jq -e --arg name "$plugin_name" --arg marketplace "$marketplace" 'any(.[]; .name == $name and .marketplace == $marketplace)' >/dev/null ;;
-  esac
-}
-
-install() {
+set_up() {
+  local plugin
   echo
-  echo "Setting up the $plugin_title for $(name "$agent")."
+  [[ -z $installed ]] || echo "Set up for $(name "$agent") already, checking for a newer version:$installed"
+  [[ -z $chosen ]] || echo "Setting up for $(name "$agent"):$chosen"
   case $agent in
     claude)
-      if has claude && ! plugin_installed; then
-        claude plugin marketplace add "$repository" --scope project
-        claude plugin install "$plugin" --scope project
+      if has claude; then
+        [[ -z $chosen ]] || claude plugin marketplace add "$repository" --scope project
+        claude plugin marketplace update "$marketplace" >/dev/null
+        for plugin in $chosen; do
+          claude plugin install "$plugin@$marketplace" --scope project
+        done
+        for plugin in $installed; do
+          claude plugin update "$plugin@$marketplace" --scope project
+        done
       fi
       merge_settings
-      has claude || echo "Once Claude Code is installed, run in this repository: claude plugin install $plugin --scope project"
+      for plugin in $chosen; do
+        has claude || echo "Once Claude Code is installed, run in this repository: claude plugin install $plugin@$marketplace --scope project"
+      done
       ;;
     copilot)
       merge_settings
-      echo "Copilot CLI installs the plugin when you next start it in this repository and trust the folder."
-      ;;
-  esac
-}
-
-update() {
-  echo
-  echo "The $plugin_title is set up for $(name "$agent"). Checking for a newer version."
-  case $agent in
-    claude)
-      claude plugin marketplace update "$marketplace" >/dev/null
-      claude plugin update "$plugin" --scope project
-      ;;
-    copilot)
-      copilot plugin marketplace update "$marketplace" >/dev/null
-      copilot plugin update "$plugin"
+      if [[ -n $installed ]]; then
+        copilot plugin marketplace update "$marketplace" >/dev/null
+        for plugin in $installed; do
+          copilot plugin update "$plugin@$marketplace"
+        done
+      fi
+      [[ -z $chosen ]] || echo "Copilot CLI installs the new plugins when you next start it in this repository and trust the folder."
       ;;
   esac
 }
@@ -169,20 +194,17 @@ main() {
   local before
   check_own_needs
   pick_agent
+  pick_plugins
   check_requirements
   before=$(cat "$settings" 2>/dev/null || true)
-  if settings_complete && plugin_installed; then
-    update
-  else
-    install
-  fi
+  set_up
   echo
   # claude plugin install rewrites the settings in its own key order, so an unchanged content gets its original text back.
   if [[ $(jq -S . <<<"$before") == "$(jq -S . "$settings")" ]]; then
     printf '%s\n' "$before" >"$settings"
     echo "Done."
   else
-    echo "Done. Commit $settings so everyone working in this repository gets the plugin."
+    echo "Done. Commit $settings so everyone working in this repository gets the plugins."
   fi
 }
 

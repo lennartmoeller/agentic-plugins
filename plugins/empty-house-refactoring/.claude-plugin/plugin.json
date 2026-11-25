@@ -1,0 +1,8 @@
+{
+  "name": "empty-house-refactoring",
+  "version": "0.1.0",
+  "description": "Rewrites a repository from its idea in an emptied checkout.",
+  "author": {
+    "name": "Lennart Möller"
+  }
+}

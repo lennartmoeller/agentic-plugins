@@ -9,10 +9,11 @@ how a skill is built - its description, opening, announcement, README entry and 
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation with the maintainer, 2026-11-22; plugin validator run that day
-**Verification:** corroborated — - claude plugin validate . --strict passed on 2026-11-22 with .claude/CLAUDE.md and failed with a root CLAUDE.md
+**Verification:** contradicted — since 2026-11-25 the skills it governs are in plugins/*/skills/, which .claude/CLAUDE.md and the skill name, as 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records; claude plugin validate . --strict passed on 2026-11-22 with .claude/CLAUDE.md and failed with a root CLAUDE.md
 **Revisit when:** a consuming repository needs to author skills, or the validator stops warning about a CLAUDE.md at the plugin root
 **See:** distribution.md#the-repository-consumes-its-own-plugin-from-skills — 6833aac8-e37a-4ca3-89e5-58992f58e2da — as of 2026-11-22
 **See:** distribution.md#the-quality-gate-is-the-local-plugin-validator — b9080fe5-e1e6-46c2-a343-b965f798a07f — as of 2026-11-22
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 `skill-authoring` lives in `.claude/skills/skill-authoring/`, outside the plugin and its README, and `.claude/CLAUDE.md` holds the one rule that announces it: use it whenever creating or editing a skill in `skills/`.
 It governs only the skills in `skills/`, so it is not bound by its own rules.
@@ -36,16 +37,11 @@ The root is also the plugin root, where `claude plugin validate . --strict` warn
 **Status:** active
 **Evidence:** confirmed
 **Source:** planning conversation with the maintainer, 2026-11-22; best-practices documentation of Anthropic and skill documentation of Claude Code and Copilot CLI, read that day
-**Verification:** corroborated — - Claude Code probes with its smallest model on 2026-11-22: asked to add a skill in a copy of this repository, it loaded skill-authoring in 2 of 3 runs and read its file in the third, and every skill it drafted kept all rules
+**Verification:** contradicted — since 2026-11-25 the skills are in plugins/*/skills/ and the announcements in plugins/ethos/hooks/instructions/, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records; Claude Code probes with its smallest model on 2026-11-22: asked to add a skill in a copy of this repository, it loaded skill-authoring in 2 of 3 runs and read its file in the third, and every skill it drafted kept all rules
 **Revisit when:** a skill is found used late or not at all because its description no longer says when, or Copilot CLI is found invoking a skill that sets disable-model-invocation
 **See:** skills.md#skill-authoring-is-a-skill-of-this-repository-not-of-the-plugin — 844ac4fb-a164-42f3-ab5f-7729c4b68538 — as of 2026-11-22
 **See:** instructions.md#the-hook-says-which-skill-to-use-when — c57d2458-e2a9-4442-94a5-c172d62d7436 — as of 2026-11-22
-
-**See:** instructions.md#the-hook-says-which-skill-to-use-when — c57d2458-e2a9-4442-94a5-c172d62d7436 — as of 2026-11-22
-
-**See:** instructions.md#the-hook-says-which-skill-to-use-when — c57d2458-e2a9-4442-94a5-c172d62d7436 — as of 2026-11-22
-
-**See:** instructions.md#the-hook-says-which-skill-to-use-when — c57d2458-e2a9-4442-94a5-c172d62d7436 — as of 2026-11-22
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 Every skill in `skills/` is built the same way, and `skill-authoring` holds the rules.
 The frontmatter description is one third-person sentence that says what the skill does and to what, never when to use it.

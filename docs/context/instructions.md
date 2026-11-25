@@ -155,8 +155,10 @@ A plugin installed at user level would create `docs/context/` in every repositor
 **Status:** active
 **Evidence:** unknown
 **Source:** conversation with the maintainer, 2026-11-21
+**Verification:** contradicted — since 2026-11-25 the plugin is named ethos, so the skill is ethos:context-authoring, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records
 **Revisit when:** a session is found working without the skill
 **See:** instructions.md#the-session-start-hook-sets-up-the-context-directory — c840f105-454f-4de6-b85a-47c2fe96d619 — as of 2026-11-21
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 `hooks/instructions/session.md` tells every session to load `agentic:context-authoring` at once, and the hook does not print the skill's text into the session.
 The decision is confirmed; its reason was not stated.
@@ -175,9 +177,10 @@ It would have bound `SKILL.md` to about 9,000 characters, since Claude Code show
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation with the maintainer, 2026-11-21; the guard section of the setup reference in Keep the Why 0.20.3
-**Verification:** uncorroborated — the hook's output was checked on 2026-11-21, but no subagent was probed
+**Verification:** contradicted — since 2026-11-25 the plugin is named ethos, so the skill is ethos:context-authoring, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records; the hook's output was checked on 2026-11-21, but no subagent was probed
 **Revisit when:** a session or subagent is found writing to `docs/context/` without the skill
 **See:** instructions.md#the-hook-says-which-skill-to-use-when — c57d2458-e2a9-4442-94a5-c172d62d7436 — as of 2026-11-21
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 `docs/context/CLAUDE.md` is gone, the skill no longer creates guard files in the context directory, and the hook's list carries a rule for every session and subagent to use `agentic:context-authoring` before creating or editing anything in `docs/context/`.
 
@@ -274,10 +277,11 @@ The script escapes backslashes, double quotes and line ends and nothing else, so
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation with the maintainer, 2026-11-21
-**Verification:** corroborated — on 2026-11-21 a Claude Code session started with --dangerously-skip-permissions had its Edit of a topic file refused by the hook and the file stayed unchanged, while a session asked for a direct fix used the script on its own; Copilot CLI was not run
+**Verification:** contradicted — since 2026-11-25 the plugin is named ethos, so the skill is ethos:context-authoring, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records; on 2026-11-21 a Claude Code session started with --dangerously-skip-permissions had its Edit of a topic file refused by the hook and the file stayed unchanged, while a session asked for a direct fix used the script on its own; Copilot CLI was not run
 **Revisit when:** an agent is found writing into docs/context/ around the script, or Copilot CLI is found not to honour the refusal
 **See:** instructions.md#a-rule-in-the-hooks-list-replaces-the-guard-file-in-the-context-directory — 486ac6f4-ea2f-41da-948c-80659db73dd7 — as of 2026-11-21
 **See:** context-authoring.md#scripts-read-and-write-the-context-directory — 2bb81a2b-2f49-4dd2-ba07-7a5e069d1b9c — as of 2026-11-21
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 `hooks/guard.sh` runs as a `PreToolUse` hook for `Edit`, `Write`, `MultiEdit` and `NotebookEdit` and refuses any of them on a path in `docs/context/`, exiting with code 2 and a reason that names the context script.
 Reading stays open, a shell write into `docs/context/` is forbidden only by the skill's rule, and the hook's list keeps the rule that has a subagent load `agentic:context-authoring` before writing there.
@@ -299,8 +303,10 @@ Reading stays open, a shell write into `docs/context/` is forbidden only by the 
 **Status:** active
 **Evidence:** confirmed
 **Source:** conversation with the maintainer, 2026-11-21
+**Verification:** contradicted — since 2026-11-25 the plugin is named ethos, so the skill is ethos:context-authoring, which 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 records
 **Revisit when:** sessions are found changing code without consulting the context
 **See:** context-authoring.md#scripts-read-and-write-the-context-directory — 2bb81a2b-2f49-4dd2-ba07-7a5e069d1b9c — as of 2026-11-21
+**See:** distribution.md#the-setup-travels-as-three-plugins-from-a-marketplace-in-this-repository — 32e8dc09-dc9f-4edf-a9a5-2617d6f2d368 — as of 2026-11-25
 
 Before changing something, the agent runs the context script's `themes` command itself, as `agentic:context-authoring` instructs; `hooks/rules.sh` prints only the rules and no list of themes.
 The session start no longer creates `docs/context/`: the script creates it with the first theme.
