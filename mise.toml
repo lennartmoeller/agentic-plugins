@@ -1,6 +1,6 @@
 [tools]
 actionlint = "1.7.12"
-"aqua:anthropics/claude-code" = "2.1.330"
+"aqua:anthropics/claude-code" = "2.1.331"
 shellcheck = "0.11.0"
 
 [tasks.check]
